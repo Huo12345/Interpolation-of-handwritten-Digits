@@ -6,7 +6,7 @@ from typing import List, Tuple
 
 import numpy as np
 
-from . import FeedForwardNeuronalNetwork
+from . import CompressibleFeedForwardNeuronalNetwork
 
 
 class MnistNetwork:
@@ -14,7 +14,7 @@ class MnistNetwork:
     learning_rate: float
     work_dir: str
 
-    network: FeedForwardNeuronalNetwork
+    network: CompressibleFeedForwardNeuronalNetwork
     image_size: int
     train_data: np.ndarray
     test_data: np.ndarray
@@ -37,7 +37,7 @@ class MnistNetwork:
             self.test_data = self.load_test_data()
 
         if self.network is None:
-            self.network = FeedForwardNeuronalNetwork([self.image_size] + self.layers + [10], self.learning_rate)
+            self.network = CompressibleFeedForwardNeuronalNetwork([self.image_size] + self.layers + [10], self.learning_rate)
 
         train_data, eval_data = self.split_data_set(self.train_data[0], 0.9)
         train_label, eval_label = self.split_data_set(self.train_data[1], 0.9)
@@ -46,12 +46,13 @@ class MnistNetwork:
         return self.network.evaluate(self.test_data[0], self.test_data[1])
 
     def split_data_set(self, data_set: np.ndarray, ratio: float) -> Tuple[np.ndarray, np.ndarray]:
+        data_set = data_set.transpose()
         size = len(data_set)
         indeces = range(size)
         delim = int(math.floor(size * ratio))
         p1 = np.array([data_set[i] for i in indeces[:delim]])
         p2 = np.array([data_set[i] for i in indeces[delim:]])
-        return p1, p2
+        return p1.transpose(), p2.transpose()
 
     def load_train_data(self) -> Tuple[np.ndarray, np.ndarray]:
         images = self.extract_images(self.download_file_if_needed('train-images-idx3-ubyte.gz'))
@@ -85,7 +86,7 @@ class MnistNetwork:
             buffer = bytestream.read(self.image_size * nr_of_images)
             images = np.frombuffer(buffer, dtype=np.uint8).astype(np.float32)
             images = images.reshape(nr_of_images, self.image_size)
-            return images
+            return images.transpose()
 
     def extract_labels(self, file: str) -> np.ndarray:
         with gzip.open(file) as bytestream:
@@ -94,4 +95,4 @@ class MnistNetwork:
 
             buffer = bytestream.read(nr_of_labels)
             labels = np.frombuffer(buffer, dtype=np.uint8)
-            return (np.arange(10) == labels[:, None]).astype(np.float32)
+            return (np.arange(10) == labels[:, None]).astype(np.float32).transpose()

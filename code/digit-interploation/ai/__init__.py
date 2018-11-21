@@ -1,2 +1,2 @@
-from .FeedForwardNeuronalNetwork import FeedForwardNeuronalNetwork
+from .CompressibleFeedForwardNeuronalNetwork import CompressibleFeedForwardNeuronalNetwork
 from .MnistNetwork import MnistNetwork

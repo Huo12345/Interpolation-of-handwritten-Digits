@@ -29,7 +29,7 @@ def sigmoid(x):
 
 
 def sigmoid_inverse(x):
-    return math.log(1/x - 1)
+    return -math.log(1/x - 1)
 
 
 class CompressedNeuronalNetwork:
@@ -46,13 +46,13 @@ class CompressedNeuronalNetwork:
         self.ai = np.vectorize(sigmoid_inverse)
 
         self.M = [np.matmul(w[i], b[i]) for i in range(len(w))]
-        self.R = list(reversed([np.linalg.pinv(m) for m in self.M]))
+        self.R = list(reversed([np.linalg.inv(m) for m in self.M]))
 
     def feed_forward(self, x: np.ndarray) -> np.ndarray:
         x = homogenize_vector(x)
         for m in self.M:
             x = np.matmul(x, m)
-            x[:, :-1] = self.a(np.clip(x[:, :-1], -500, 500))
+            x[:, :-1] = self.a(np.clip(x[:, :-1], -50, 50))
         return x[:, :-1]
 
     def predict(self, x: np.ndarray) -> np.ndarray:
@@ -61,7 +61,7 @@ class CompressedNeuronalNetwork:
     def feed_backwards(self, x: np.ndarray) -> np.ndarray:
         x = homogenize_vector(x)
         for m in self.R:
-            x[:, :-1] = self.ai(np.clip(x[:, :-1], 0.000000001, 0.999999999))
+            x[:, :-1] = self.ai(np.clip(x[:, :-1], 1e-18, 0.9999999))
             x = np.matmul(x, m)
         return x[:, :-1]
 

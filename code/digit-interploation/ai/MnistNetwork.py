@@ -16,6 +16,7 @@ class MnistNetwork:
 
     network: FeedForwardNeuronalNetwork
     image_size: int
+    label_size: int
     train_data: np.ndarray
     test_data: np.ndarray
 
@@ -27,6 +28,7 @@ class MnistNetwork:
         self.work_dir = work_dir
         self.network = None
         self.image_size = 0
+        self.label_size = 784
         self.train_data = None
         self.test_data = None
 
@@ -37,7 +39,7 @@ class MnistNetwork:
             self.test_data = self.load_test_data()
 
         if self.network is None:
-            self.network = FeedForwardNeuronalNetwork([self.image_size] + self.layers + [10], self.learning_rate)
+            self.network = FeedForwardNeuronalNetwork([self.image_size] + self.layers + [self.label_size], self.learning_rate)
 
         train_data, eval_data = self.split_data_set(self.train_data[0], 0.9)
         train_label, eval_label = self.split_data_set(self.train_data[1], 0.9)
@@ -94,4 +96,4 @@ class MnistNetwork:
 
             buffer = bytestream.read(nr_of_labels)
             labels = np.frombuffer(buffer, dtype=np.uint8)
-            return (np.arange(10) == labels[:, None]).astype(np.float32)
+            return (np.arange(self.label_size) == labels[:, None]).astype(np.float32)

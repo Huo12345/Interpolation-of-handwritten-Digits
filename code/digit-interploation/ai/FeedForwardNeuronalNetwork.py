@@ -12,6 +12,8 @@ class FeedForwardNeuronalNetwork:
     outputs: int
     x: Tensor
     y: Tensor
+    w: List[Tensor]
+    b: List[Tensor]
     predict: int
     updates: any
     session: tf.Session
@@ -23,12 +25,12 @@ class FeedForwardNeuronalNetwork:
         self.x = tf.placeholder(tf.float32, shape=(None, self.inputs))
         self.y = tf.placeholder(tf.float32, shape=(None, self.outputs))
 
-        w = [tf.Variable(tf.random_normal(shape=(layers[i - 1], layers[i]))) for i in range(1, len(layers))]
-        b = [tf.Variable(tf.random_normal(shape=(1, layers[i]))) for i in range(1, len(layers))]
+        self.w = [tf.Variable(tf.random_normal(shape=(layers[i - 1], layers[i]))) for i in range(1, len(layers))]
+        self.b = [tf.Variable(tf.random_normal(shape=(1, layers[i]))) for i in range(1, len(layers))]
 
         a = self.x
-        for i in range(len(w)):
-            a = tf.nn.sigmoid(tf.add(tf.matmul(a, w[i]), b[i]))
+        for i in range(len(self.w)):
+            a = tf.nn.sigmoid(tf.add(tf.matmul(a, self.w[i]), self.b[i]))
 
         yhat = a
 

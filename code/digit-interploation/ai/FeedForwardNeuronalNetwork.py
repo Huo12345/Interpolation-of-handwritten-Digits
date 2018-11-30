@@ -14,7 +14,7 @@ class FeedForwardNeuronalNetwork:
     y: Tensor
     w: List[Tensor]
     b: List[Tensor]
-    predict: int
+    argmax: int
     updates: any
     session: tf.Session
 
@@ -32,11 +32,11 @@ class FeedForwardNeuronalNetwork:
         for i in range(len(self.w)):
             a = tf.nn.sigmoid(tf.add(tf.matmul(a, self.w[i]), self.b[i]))
 
-        yhat = a
+        self.yhat = a
 
-        self.predict = tf.argmax(yhat, axis=1)
+        self.argmax = tf.argmax(self.yhat, axis=1)
 
-        cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=yhat, labels=self.y))
+        cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=self.yhat, labels=self.y))
         self.updates = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
 
         self.sess = tf.Session()
@@ -44,7 +44,10 @@ class FeedForwardNeuronalNetwork:
         self.sess.run(init)
 
     def feed_forward(self, x) -> int:
-        return self.sess.run(self.predict, feed_dict={self.x: x})
+        return self.sess.run(self.yhat, feed_dict={self.x: x})
+
+    def predict(self, x):
+        return self.sess.run(self.argmax, feed_dict={self.x: x})
 
     def train(self, x, y, epochs, batch_size, test_x=None, test_y=None) -> None:
         indices = [i for i in range(len(x))]
@@ -62,7 +65,7 @@ class FeedForwardNeuronalNetwork:
 
     def evaluate(self, x, y) -> float:
         batch_size = len(x)
-        results = self.feed_forward(x)
+        results = self.predict(x)
         right = sum([1 if results[i] == np.argmax(y[i]) else 0 for i in range(batch_size)])
 
         return right / float(batch_size)

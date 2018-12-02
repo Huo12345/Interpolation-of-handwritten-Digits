@@ -1,6 +1,7 @@
 from .NeuronalNetwork import NeuronalNetwork
 from .FeedForwardNeuronalNetwork import FeedForwardNeuronalNetwork
 from .InvertableNeuronalNetwork import InvertableNeuronalNetwork
+from .SquaredInvertableNeuronalNetwork import SquaredInvertableNeuronalNetwork
 from .MnistNetwork import MnistNetwork
 from .ApproximationNeuralNetwork import ApproximationNeuralNetwork
 from .CompressableNeuronalNetwork import CompressableNeuronalNetwork

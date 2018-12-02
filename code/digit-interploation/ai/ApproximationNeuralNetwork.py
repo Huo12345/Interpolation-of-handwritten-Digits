@@ -31,5 +31,4 @@ class ApproximationNeuralNetwork:
             for _ in range(100):
                 self.sess.run(self.updates, feed_dict={self.i: target})
             cost = self.sess.run(self.cost, feed_dict={self.i: target})
-            print("Epoch %d: %f" % (i, cost))
         return self.sess.run(self.o)

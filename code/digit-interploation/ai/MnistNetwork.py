@@ -6,10 +6,10 @@ from typing import List, Tuple
 
 import numpy as np
 
-from . import FeedForwardNeuronalNetwork
+from . import FeedForwardNeuronalNetwork, NeuronalNetwork
 
 
-class MnistNetwork:
+class MnistNetwork(NeuronalNetwork):
     layers: List[int]
     learning_rate: float
     work_dir: str
@@ -44,6 +44,12 @@ class MnistNetwork:
 
         self.network.train(train_data, train_label, epochs, batch_size, eval_data, eval_label)
         return self.network.evaluate(self.test_data[0], self.test_data[1])
+
+    def feed_forward(self, x: np.ndarray) -> np.ndarray:
+        return self.network.feed_forward(x)
+
+    def get_label_count(self) -> int:
+        return self.network.get_label_count()
 
     def split_data_set(self, data_set: np.ndarray, ratio: float) -> Tuple[np.ndarray, np.ndarray]:
         size = len(data_set)

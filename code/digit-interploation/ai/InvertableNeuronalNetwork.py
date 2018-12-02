@@ -3,25 +3,8 @@ from typing import List
 
 import numpy as np
 
-
-def homogenize_matrix(m: np.ndarray) -> np.ndarray:
-    h = np.zeros((m.shape[0] + 1, m.shape[1] + 1))
-    h[:-1, :-1] = m
-    h[m.shape[0]][m.shape[1]] = 1
-    return h
-
-
-def homogenize_translation_vector(v: np.ndarray) -> np.ndarray:
-    n = v.shape[1] + 1
-    h = np.identity(n)
-    h[n - 1, :-1] = v
-    return h
-
-
-def homogenize_vector(v: np.ndarray) -> np.ndarray:
-    h = np.ones((v.shape[0], v.shape[1] + 1))
-    h[:, :-1] = v
-    return h
+from ai import NeuronalNetwork
+from ai.HomogenousFunctions import homogenize_matrix, homogenize_translation_vector, homogenize_vector
 
 
 def sigmoid(x):
@@ -32,7 +15,7 @@ def sigmoid_inverse(x):
     return math.log(1/x - 1)
 
 
-class CompressedNeuronalNetwork:
+class InvertableNeuronalNetwork(NeuronalNetwork):
     M: List[np.ndarray]
     R: List[np.ndarray]
     a: any
@@ -48,6 +31,9 @@ class CompressedNeuronalNetwork:
         self.M = [np.matmul(w[i], b[i]) for i in range(len(w))]
         self.R = list(reversed([np.linalg.pinv(m) for m in self.M]))
 
+    def get_label_count(self) -> int:
+        return self.R[0].shape[1]
+
     def feed_forward(self, x: np.ndarray) -> np.ndarray:
         x = homogenize_vector(x)
         for m in self.M:
@@ -55,17 +41,9 @@ class CompressedNeuronalNetwork:
             x[:, :-1] = self.a(np.clip(x[:, :-1], -500, 500))
         return x[:, :-1]
 
-    def predict(self, x: np.ndarray) -> np.ndarray:
-        return np.argmax(self.feed_forward(x), axis=1)
-
     def feed_backwards(self, x: np.ndarray) -> np.ndarray:
         x = homogenize_vector(x)
         for m in self.R:
             x[:, :-1] = self.ai(np.clip(x[:, :-1], 0.000000001, 0.999999999))
             x = np.matmul(x, m)
         return x[:, :-1]
-
-    def evaluate(self, x: np.ndarray, y: np.ndarray) -> float:
-        r = self.predict(x)
-        right = sum(np.equal(r, np.argmax(y, axis=1)))
-        return right / float(len(r))

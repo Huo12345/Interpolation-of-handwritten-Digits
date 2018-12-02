@@ -19,16 +19,17 @@ class ApproximationNeuralNetwork:
         self.cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=a, labels=self.i))
         self.updates = tf.train.GradientDescentOptimizer(learning_rate).minimize(self.cost)
 
+        self.rest = tf.assign(self.o, tf.random_normal(shape=(1, w[0].shape[0])));
+
         self.sess = tf.Session()
         init = tf.global_variables_initializer()
         self.sess.run(init)
 
     def approximate(self, target: np.ndarray) -> np.ndarray:
-        while True:
-            for i in range(10):
+        self.sess.run(self.rest)
+        for i in range(100):
+            for _ in range(100):
                 self.sess.run(self.updates, feed_dict={self.i: target})
             cost = self.sess.run(self.cost, feed_dict={self.i: target})
-            print(cost)
-            if cost < 1.5:
-                break
+            print("Epoch %d: %f" % (i, cost))
         return self.sess.run(self.o)

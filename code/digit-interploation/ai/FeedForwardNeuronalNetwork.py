@@ -6,8 +6,10 @@ import tensorflow as tf
 from typing import List
 from tensorflow import Tensor
 
+from . import NeuronalNetwork
 
-class FeedForwardNeuronalNetwork:
+
+class FeedForwardNeuronalNetwork(NeuronalNetwork):
     inputs: int
     outputs: int
     x: Tensor
@@ -43,10 +45,13 @@ class FeedForwardNeuronalNetwork:
         init = tf.global_variables_initializer()
         self.sess.run(init)
 
-    def feed_forward(self, x) -> int:
+    def get_label_count(self) -> int:
+        return self.outputs
+
+    def feed_forward(self, x) -> np.ndarray:
         return self.sess.run(self.yhat, feed_dict={self.x: x})
 
-    def predict(self, x):
+    def predict(self, x) -> np.ndarray:
         return self.sess.run(self.argmax, feed_dict={self.x: x})
 
     def train(self, x, y, epochs, batch_size, test_x=None, test_y=None) -> None:
@@ -62,13 +67,6 @@ class FeedForwardNeuronalNetwork:
 
     def train_batch(self, x, y) -> None:
         self.sess.run(self.updates, feed_dict={self.x: x, self.y: y})
-
-    def evaluate(self, x, y) -> float:
-        batch_size = len(x)
-        results = self.predict(x)
-        right = sum([1 if results[i] == np.argmax(y[i]) else 0 for i in range(batch_size)])
-
-        return right / float(batch_size)
 
     def __del__(self) -> None:
         self.sess.close()

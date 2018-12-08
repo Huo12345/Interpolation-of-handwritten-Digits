@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 import numpy as np
 import tensorflow as tf
@@ -25,10 +25,9 @@ class ApproximationNeuralNetwork:
         init = tf.global_variables_initializer()
         self.sess.run(init)
 
-    def approximate(self, target: np.ndarray) -> np.ndarray:
+    def approximate(self, target: np.ndarray) -> Tuple[np.ndarray, float]:
         self.sess.run(self.rest)
         for i in range(100):
             for _ in range(100):
                 self.sess.run(self.updates, feed_dict={self.i: target})
-            cost = self.sess.run(self.cost, feed_dict={self.i: target})
-        return self.sess.run(self.o)
+        return self.sess.run(self.o), self.sess.run(self.cost, feed_dict={self.i: target})

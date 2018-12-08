@@ -1,7 +1,8 @@
+import numpy as np
 from typing import List
 
 
-def create_confusion_table_matrix(filename: str, data: List[List[int]], labels: List[str], caption: str = None,
+def create_confusion_table_matrix(filename: str, data: np.ndarray, labels: List[str], caption: str = None,
                                   label: str = None):
     with open(filename, "w") as text_file:
         text_file.write("\\documentclass[Interploate_hadwritten_Digits.tex]{subfiles}")
@@ -20,3 +21,4 @@ def create_confusion_table_matrix(filename: str, data: List[List[int]], labels: 
             text_file.write("\\label{%s}" % label)
         text_file.write("\\end{table}")
         text_file.write("\\end{document}")
+    print("Created %s", filename)

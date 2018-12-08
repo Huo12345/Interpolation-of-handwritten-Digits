@@ -2,7 +2,6 @@ from typing import List
 
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.ticker import PercentFormatter
 from scipy.stats import norm
 
 
@@ -14,6 +13,7 @@ def disp_image(image: np.ndarray, title: str = None) -> None:
 def save_image(file_name: str, image: np.ndarray, title: str = None) -> None:
     make_image(image, title)
     plt.savefig(file_name)
+    print("Created %s", file_name)
 
 
 def make_image(image: np.ndarray, title: str = None) -> None:
@@ -30,10 +30,11 @@ def disp_histogram(data: List, topic: str, title: str = None) -> None:
 def save_histogram(file_name: str, data: List, topic: str, title: str = None) -> None:
     make_histogram(data, topic, title)
     plt.savefig(file_name)
+    print("Created %s", file_name)
 
 
 def make_histogram(data: List, topic: str, title: str = None) -> None:
-    plt.hist(data, density=True, bins=len(set(data)))
+    plt.hist(data, density=True)
 
     (mu, sigma) = norm.fit(data)
     x = np.linspace(min(data), max(data), 100)

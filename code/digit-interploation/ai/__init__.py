@@ -5,3 +5,4 @@ from .SquaredInvertableNeuronalNetwork import SquaredInvertableNeuronalNetwork
 from .MnistNetwork import MnistNetwork
 from .ApproximationNeuralNetwork import ApproximationNeuralNetwork
 from .CompressableNeuronalNetwork import CompressableNeuronalNetwork
+from .CompressableNeuronalNetwork_v2 import CompressableNeuronalNetworkV2

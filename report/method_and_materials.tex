@@ -43,6 +43,7 @@
 	Das grundlegende Konzept des Gradientenverfahren kann der Gleichung \ref{eq:gradient_decent} entnommen werden. Der neue Wert $ b $ ergibt sich aus dem Lerning Rate $ \gamma $ multipliziert mit der Richtung des steilsten Abfalls $ \Delta f(a) $ subtrahiert vom ursprünglichen Wert $ a $.
 	
 	\subsection{Rückrechnung im Neuronalen Netz}
+	\label{sec:method_compress}
 	Um die Funktion des Neuronalen Netzes zu invertieren wurde in einem ersten Schritt eine komprimierte Version dieses Netzes erstellt. Diese Komprimierung bestand darin, wie in Gleichung \ref{eq:homogenize_layer} beschrieben die Weight- und Bias-Matrizen in den homogenen Raum zu transformieren und so die Addition des Bias-Vektors und die Multiplikation der Weight-Matrix in eine Matrix pro Layer zusammenzunehmen.
 	\begin{equation}
 		M_{i} =

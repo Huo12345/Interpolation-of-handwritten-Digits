@@ -31,7 +31,7 @@ class CompressableNeuronalNetwork(NeuronalNetwork):
         self.R = np.linalg.pinv(self.M)
 
     def get_label_count(self) -> int:
-        return self.R.shape[1]
+        return self.R.shape[0] - 1
 
     def feed_forward(self, x: np.ndarray) -> np.ndarray:
         x = homogenize_vector(x)

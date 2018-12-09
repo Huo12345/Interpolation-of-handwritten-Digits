@@ -13,6 +13,7 @@ class MnistNetwork(NeuronalNetwork):
     layers: List[int]
     learning_rate: float
     work_dir: str
+    label_count: int
 
     network: FeedForwardNeuronalNetwork
     image_size: int
@@ -21,7 +22,7 @@ class MnistNetwork(NeuronalNetwork):
 
     MNIST_URL: str = 'http://yann.lecun.com/exdb/mnist/'
 
-    def __init__(self, layers: List[int], learning_rate: float, work_dir: str) -> None:
+    def __init__(self, layers: List[int], learning_rate: float, work_dir: str, squared: bool = False) -> None:
         self.layers = layers
         self.learning_rate = learning_rate
         self.work_dir = work_dir
@@ -29,6 +30,7 @@ class MnistNetwork(NeuronalNetwork):
         self.image_size = 0
         self.train_data = None
         self.test_data = None
+        self.label_count = 28 * 28 if squared else 10
 
     def train(self, epochs: int, batch_size: int) -> float:
         if self.train_data is None:
@@ -37,7 +39,7 @@ class MnistNetwork(NeuronalNetwork):
             self.test_data = self.load_test_data()
 
         if self.network is None:
-            self.network = FeedForwardNeuronalNetwork([self.image_size] + self.layers + [10], self.learning_rate)
+            self.network = FeedForwardNeuronalNetwork([self.image_size] + self.layers + [self.label_count], self.learning_rate)
 
         train_data, eval_data = self.split_data_set(self.train_data[0], 0.9)
         train_label, eval_label = self.split_data_set(self.train_data[1], 0.9)
@@ -49,7 +51,7 @@ class MnistNetwork(NeuronalNetwork):
         return self.network.feed_forward(x)
 
     def get_label_count(self) -> int:
-        return self.network.get_label_count()
+        return 10
 
     def split_data_set(self, data_set: np.ndarray, ratio: float) -> Tuple[np.ndarray, np.ndarray]:
         size = len(data_set)
@@ -100,4 +102,4 @@ class MnistNetwork(NeuronalNetwork):
 
             buffer = bytestream.read(nr_of_labels)
             labels = np.frombuffer(buffer, dtype=np.uint8)
-            return (np.arange(10) == labels[:, None]).astype(np.float32)
+            return (np.arange(self.label_count) == labels[:, None]).astype(np.float32)

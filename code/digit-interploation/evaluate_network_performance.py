@@ -8,7 +8,7 @@ from ui import save_histogram, save_image, create_confusion_table_matrix
 
 
 def interpolate_vector(v: np.ndarray, dimen: Tuple[int, int], factor: float) -> np.ndarray:
-    m = np.identity(len(v))
+    m = np.identity(v.shape[1])
     a = math.pi / 4 * factor
     m[dimen[0], dimen[0]] = math.cos(a)
     m[dimen[0], dimen[1]] = math.sin(a)
@@ -22,6 +22,7 @@ out_dir = '.\\out'
 
 accuracy = []
 c_accuracy = []
+c2_accuracy = []
 i_accuracy = []
 
 network = MnistNetwork([100, 50], 0.1, work_dir)
@@ -38,7 +39,7 @@ sample_size = 20
 labels = list(map(str, range(10)))
 
 for i in range(sample_size):
-    print("Iteration %d of %d" % (i, sample_size))
+    print("Iteration %d of %d" % (i + 1, sample_size))
     network = MnistNetwork([100, 50], 0.1, work_dir)
     acc = network.train(100, 100)
     accuracy.append(acc)
@@ -50,8 +51,15 @@ for i in range(sample_size):
     c_accuracy.append(c_network.evaluate(test_data[0], test_data[1]))
     c_confusion_matrix = c_network.confusion_matrix(test_data[0], test_data[1])
     create_confusion_table_matrix("%s\confusion_table_compressed_network_%d.tex" % (out_dir, i), c_confusion_matrix,
-                                  labels, "Konfusionsmatrix Komprimiertes Netzwerk %d" % i,
+                                  labels, "Konfusionsmatrix Komprimiertes Netzwerk Art 1 #%d" % i,
                                   "tbl:confusion_table_compressed_network_%d" % i)
+    c2_network = CompressableNeuronalNetworkV2([network.network.sess.run(t) for t in network.network.w],
+                                               [network.network.sess.run(t) for t in network.network.b])
+    c2_accuracy.append(c2_network.evaluate(test_data[0], test_data[1]))
+    c2_confusion_matrix = c2_network.confusion_matrix(test_data[0], test_data[1])
+    create_confusion_table_matrix("%s\confusion_table_compressed_network_v2_%d.tex" % (out_dir, i), c2_confusion_matrix,
+                                  labels, "Konfusionsmatrix Komprimiertes Netzwerk Art 2 #%d" % i,
+                                  "tbl:confusion_table_compressed_network_v2_%d" % i)
     i_network = InvertableNeuronalNetwork([network.network.sess.run(t) for t in network.network.w],
                                           [network.network.sess.run(t) for t in network.network.b])
     i_accuracy.append(i_network.evaluate(test_data[0], test_data[1]))
@@ -64,7 +72,8 @@ for i in range(sample_size):
         best_network = network
 
 save_histogram("%s\histogram_network_accuracy.png" % out_dir, accuracy, "Präzision Erkennungsnetzwerke")
-save_histogram("%s\histogram_compressed_network_accuracy.png" % out_dir, c_accuracy, "Präzision Komprimierte Netzwerke")
+save_histogram("%s\histogram_compressed_network_accuracy.png" % out_dir, c2_accuracy, "Präzision Komprimierte Netzwerke Art 1")
+save_histogram("%s\histogram_compressed_network_v2_accuracy.png" % out_dir, c_accuracy, "Präzision Komprimierte Netzwerke Art 2")
 save_histogram("%s\histogram_inverted_network_accuracy.png" % out_dir, accuracy, "Präzision Invertierbare Nettzwerke")
 
 sq_accuracy = []
@@ -72,7 +81,7 @@ isq_accuracy = []
 best_acc = 0
 for i in range(sample_size):
     print("Iteration %d of %d" % (i, sample_size))
-    network = MnistNetwork([28 * 28], 0.1, work_dir)
+    network = MnistNetwork([], 0.1, work_dir, squared=True)
     acc = network.train(100, 100)
     sq_accuracy.append(acc)
     sq_confusion_matrix = network.confusion_matrix(test_data[0], test_data[1])
@@ -91,7 +100,7 @@ for i in range(sample_size):
         best_acc = acc
         best_sq_network = network
 
-save_histogram("%s\histogram_squared)network_accuracy.png" % out_dir, sq_accuracy,
+save_histogram("%s\histogram_squared_network_accuracy.png" % out_dir, sq_accuracy,
                "Präzision Quadratische Erkennungsnetzwerke")
 save_histogram("%s\histogram_squared_inverted_network_accuracy.png" % out_dir, accuracy,
                "Präzision Quadratische Invertierbare Nettzwerke")
@@ -109,8 +118,8 @@ sq_i_reversed_network = SquaredInvertableNeuronalNetwork(
 approximation_error_ideal = []
 
 for i in range(10):
-    v = np.zeros(1, 10)
-    v[i] = 1
+    v = np.zeros((1, 10))
+    v[0, i] = 1
     image = i_reversed_network.feed_backwards(v)
     save_image("%s\ideal_%d_inverted.png" % (out_dir, i), image, "Ideale %d aus Invertierung" % i)
     image = sq_i_reversed_network.feed_backwards(v)
@@ -127,8 +136,8 @@ for i in range(10):
     for j in range(i, 10):
         for k in [0.25, 0.5, 0.75]:
             l = int(k * 100)
-            v = np.zeros(1, 10)
-            v[i] = 1
+            v = np.zeros((1, 10))
+            v[0, i] = 1
             v = interpolate_vector(v, (i, j), k)
             image = i_reversed_network.feed_backwards(v)
             save_image("%s\interpolated_%d_%d_%d_inverted.png" % (out_dir, i, j, l), image,
@@ -142,4 +151,4 @@ for i in range(10):
                        "Interpolierte Ziffer %d%% zwischen %d und %d aus Approximierung" % (l, i, j))
 
 save_histogram("%s\histogram_approximation_error_interpolation.png" % out_dir, approximation_error_interpolated,
-               "Fehler Approximierung interpolierter Ziffern",)
+               "Fehler Approximierung interpolierter Ziffern")

@@ -32,7 +32,7 @@ class SquaredInvertableNeuronalNetwork(NeuronalNetwork):
         self.R = list(reversed([np.linalg.inv(m) for m in self.M]))
 
     def get_label_count(self) -> int:
-        return self.R[0].shape[1]
+        return 10
 
     def feed_forward(self, x: np.ndarray) -> np.ndarray:
         x = homogenize_vector(x)
@@ -42,8 +42,13 @@ class SquaredInvertableNeuronalNetwork(NeuronalNetwork):
         return x[:, :-1]
 
     def feed_backwards(self, x: np.ndarray) -> np.ndarray:
-        x = homogenize_vector(x)
+        v = np.zeros((1, 28 * 28))
+        v[:, 0:10] = x
+        x = homogenize_vector(v)
         for m in self.R:
             x[:, :-1] = self.ai(np.clip(x[:, :-1], 0.000000001, 0.999999999))
             x = np.matmul(x, m)
         return x[:, :-1]
+
+    def predict(self, x: np.ndarray):
+        return np.argmax(self.feed_forward(x)[:, 0:10], axis=1)

@@ -32,7 +32,7 @@ class InvertableNeuronalNetwork(NeuronalNetwork):
         self.R = list(reversed([np.linalg.pinv(m) for m in self.M]))
 
     def get_label_count(self) -> int:
-        return self.R[0].shape[1]
+        return self.R[0].shape[0] - 1
 
     def feed_forward(self, x: np.ndarray) -> np.ndarray:
         x = homogenize_vector(x)

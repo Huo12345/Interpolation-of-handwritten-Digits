@@ -1,0 +1,20 @@
+\documentclass[Interploate_hadwritten_Digits.tex]{subfiles}
+
+\begin{document}
+	\subsection{Interpretation Resultate}
+	Aus den Resultaten lassen sich verschiedene Schlüsse ziehen. Zum Ersten zeigen die Resultate im Kapitel \ref{} dass das gewählte Modell für das Neuronale Netzwerk einen Trainingsprozess hat, der nicht immer zu einem verwertbaren Resultat führt. Eine mögliche Erklärung für gewisse dieser Werte könnte den Verlust der Nachbarschaftsbeziehung von Pixeln durch die Umformung des Bildes in einen Vektor sein. Das Neuronale Netz muss diese Beziehung zuerst erlernen.
+	
+	Weiter haben die Resultate im Kapitel \ref{} auch gezeigt, dass die Komprimierung von Neuronalen Netzen in eine Matrix schwer zu realisieren ist. \textbf{Quelle suchen}: Die nichtlineare Aktivierungsfunktion des Neurons ist ein wichtiger Bestandteil der Funktion des Neurons. Diese Nicht-Linearität verhindert, dass die einzelnen Schichten in Netz zu einer Matrix zusammengefasst werden können. \textbf{Quelle suchen}: Eine lineare Funktion als Aktivierungsfunktion zu verwenden hätte einen negativen Einfluss auf das Neuron.
+	
+	Eine weitere Schwierigkeit zeigen die Resultate im Kapitel \ref{} auf. Die Aktivierungsfunktion hat die Eigenschaft, alle Zahlen $ \in \mathbb{R} $ auf den Bereich $ [0, 1] $ einzuschränken. Dadurch wird aber auch das Inverse der Funktion kleine Änderungen im Bereich stark amplifizieren. Solche kleinen Änderungen können einfach durch Rundungsfehler der Gleitkommazahlen geschehen. Bei einer gewissen Anzahl Gleitkommazahloperationen ist ein solcher Rundungsfehler unvermeidbar und durch das Verwenden von Matrixmultiplikationen werden solche Fehler durch die ganze Matrix propagiert. Dies verunmöglicht das einfache zurückrechnen durch das Neuronalen Netzwerk.
+	
+	Um trotz der Rundungsfehler der Gleitkommazahlen Ziffern im Zielraum zu interpolieren wurde der Ansatz der Approximation des Inputbildes gewählt. Im Kapitel \ref{} ist zu sehen dass die Fehler der Kreuzentropie bei der Approximation von idealen Ziffern mit bis zu 1.5 relativ vielversprechen ist. Jedoch lassen sich in den generierten Bildern keine Ziffern erkennen. Bei den interpolierten Ziffern ist der Fehler zu hoch, um gute Ergebnisse zu erwarten. 
+	
+	\subsection{Weiterführende Arbeiten}
+	Viele Fehler sind vermutlich auf den Verlust der Nachbarschaftsbeziehung der einzelnen Pixel zurückzuführen. Diese Problematik könnte mit der Verwendung eines Convolutional Neural Network entschärfen lassen. \textbf{Quelle suchen}: Solange nur Faltungen verwendet würden, könnten diese durch eine Fourier Transformation invertiert werden. Sollte am Schluss noch ein Fully Connected Layer verwendet werden, müsste sichergestellt werden, dass dieser klein genug ist um die Chancen auf einen Gleitkommafehler gering zu halten.
+	Ein anderer Ansatz wäre die Pixel komplett loszuwerden und die Ziffer als Linie mathematisch zu beschreiben. So wäre das Resultat bei einer Invertierung auch garantiert wieder eine Linie.
+	
+	\subsection{Fazit}
+	Die Frage, ob Vorgänge innerhalb eines Neuronalen Netzes mithilfe von Rückrechnung durch ein dieses Neuronale Netz visualisieren lassen, kann diese Arbeit nicht vollständig klären. Gezeigt hat sich, dass eine Invertierung eines Feed Forward Neuronalen Netzes nicht für eine solche Visualisierung eignet, wenn das Netzwerk etwas grösser wird. Die Resultate der Approximation legen jedoch nahe, dass ein Feed Forward Neuronales Netzwerk kein gutes Verständnis von Ziffern aus reinen Pixeln erlernt hat. Viel mehr scheint es als fände das trainierte Netz ein lokales Maximum, welches gut genug ist, um die meisten Ziffern zu erkennen. Von einem Verständnis für Ziffern kann nicht die Rede sein.
+	
+\end{document}

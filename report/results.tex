@@ -65,6 +65,23 @@
 	Um zu sehen, ob sich mehr Aufwand in diese Richtung lohnt, wurden Tests für die Präzision beim Invertieren der Neuronalen Netzen mit quadratischen Matrizen gemacht. Die Resultate dazu sind im Kapitel \ref{sec:results_error_inverse} zu finden.
 	\subsection{Fehler bei Gleitkommazahloperationen}
 	\label{sec:results_error_inverse}
+	Um zu bestimmen, wie sich die Rundungsfehler der Gleitkommazahlen auf Invertierung des Neuronalen Netzwerks auswirken, wurden verschiedene zufällig generierte Matrizen vor- und rückwärts durch das Neuronalen Netz gerechnet und der durchschnittliche Fehler pro Wert in der Matrix bestimmt. Die Matrizen wurden gewählt sodass $ M \in \mathbb{R}^{n \times n}, n \in [3, 10] $ und im Neuronalen Netz durch eine bis vier Schichten gerechnet. Die Resultate sind der Tabelle \ref{tbl:reverse_error} zu entnehmen. Daraus lässt sich erkennen, dass bei einer Matrix aus $ \mathbb{R}^{9 \times 9} $ bereits ein Netzwerk mit einer Schicht die Werte der Matrix im Schnitt die Werte im Bereich von $ 10^{0} $ verändert. Bei vier Schichten wird dieser Wert bereits bei einer Matrix aus $ \mathbb{R}^{6 \times 6} $ überschritten.
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|l|r|r|r|r|}
+			\hline
+			 & 1 Layer & 2 Layers & 3 Layers & 4 Layers  \\ \hline
+			$ \mathbb{R}^{3 \times 3} $ & 8.2e-15 & 3.8e-12 & 1.5e-08 & 1.6e-09 \\ \hline
+			$ \mathbb{R}^{4 \times 4} $ & 1.6e-13 & 3.3e-10 & 3.35e-05 & 1.7e-04 \\ \hline
+			$ \mathbb{R}^{5 \times 5} $ & 1.9e-10 & 5.0e-08 & 2.3e-06 & 6.1e-03 \\ \hline
+			$ \mathbb{R}^{6 \times 6} $ & 1.0e-02 & 1.6e-02 & 3.4e-02 & 4.7e+00 \\ \hline
+			$ \mathbb{R}^{7 \times 7} $ & 9.7e-02 & 2.3e-01 & 2.5e+00 & 1.3e+01 \\ \hline
+			$ \mathbb{R}^{8 \times 8} $ & 4.5e-01 & 2.3e-01 & 6.2e+00 & 1.7e+01 \\ \hline
+			$ \mathbb{R}^{9 \times 9} $ & 2.1e+00 & 1.6e+00 & 7.3e+00 & 1.9e+01 \\ \hline
+		\end{tabular}
+		\caption{Durchschnittlicher Fehler pro Wert nach Invertierung}
+		\label{tbl:reverse_error}
+	\end{table}	
 	
 	\subsection{Approximieren der Inputbilder}
 	Bei der Approximation der Bilder wurde als Qualität der Fehler aus der Kreuzentropie zwischen dem erreichten Vektor und dem gewünschten Vektor für das zu generieren Bild verwendet. Hier lassen sich unterschiede für die Approximation der idealen Ziffern und der interpolierten Ziffern erkennen. In der Abbildung \ref{fig:hist_approximation_error_ideal} ist zu erkennen, dass für die idealen Ziffern der durchschnittliche Fehler bei 1.5 liegt, wobei es einige Ausreisser bei über 2.2 gibt.
@@ -90,5 +107,7 @@
 		\captionof{figure}{Ideale 7 durch Approximierung}
 		\label{fig:dig_ideal_7_approximated}
 	\end{Figure}
+	
+	In einem letzten Versuch wurden für die Approximation anstelle von zufällig generierten Matrizen Bilder aus dem Trainingssatz verwendet. Dies führte dazu, dass die Approximation die Inputmatrix nicht veränderte, auch wenn eine andere Ziffer als Ziel der Approximation angegeben wurde.
 
 \end{document}

@@ -12,7 +12,7 @@ def sigmoid(x):
 
 
 def sigmoid_inverse(x):
-    return math.log(1/x - 1)
+    return -math.log(1/x - 1)
 
 
 class SquaredInvertableNeuronalNetwork(NeuronalNetwork):

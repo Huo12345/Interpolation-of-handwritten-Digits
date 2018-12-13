@@ -13,17 +13,34 @@
 \usepackage{subfiles}
 \usepackage[nodayofweek,level]{datetime}
 \usepackage[margin=1in,headheight=13.6pt]{geometry}
-
-\newenvironment{Figure}
-{\par\medskip\noindent\minipage{\linewidth}}
-{\endminipage\par\medskip}
-
 \usepackage{fancyhdr}
+
 \pagestyle{fancy}
 \fancyhf{}
 \lhead{}
 \rhead{Berner Fachhochschule}
 \cfoot{\thepage}
+
+
+\usepackage[backend=bibtex, style=authortitle]{biblatex}
+\bibliography{literature}
+
+\newenvironment{Figure}
+{\par\medskip\noindent\minipage{\linewidth}}
+{\endminipage\par\medskip}
+
+\renewenvironment{abstract}
+{\small
+	\begin{center}
+		\bfseries \abstractname\vspace{-.5em}\vspace{0pt}
+	\end{center}
+	\list{}{
+		\setlength{\leftmargin}{.5cm}%
+		\setlength{\rightmargin}{\leftmargin}%
+	}%
+	\item\relax}
+{\endlist}
+
 
 \title{Interpolation handgeschriebener Ziffern}
 \author{Bernard Jaquet}
@@ -48,12 +65,14 @@
 		\section{Diskussion}
 		\subfile{discussion}
 		
-		\section{Literatur}
+		\nocite{nielsen-neuronal_networks_and_deep_learning}
+		\printbibliography
 	\end{multicols}
 	\newpage
 	\appendix
 	\section{Anhang: Resultate}
 	\label{sec:apendix_konfusion_network}
+	\label{sec:apendix_numbers_inversion}
 	
 	\newpage
 	\section{Anhang: Code}

@@ -13,7 +13,7 @@
 
 	\subsection{Netzwerk Komprimierung}
 	\label{sec:results_compression}
-	Die Komprimierung des Netzwerkes gemäss Kapitel \ref{sec:method_compress} in eine Matrix führt zu einem starken Qualitätsverlust der Vorhersagen. Der grosse Teil der komprimierten Netze erreicht mit einer Trefferquote von 30\%, wie in Abbildung \ref{fig:hist_compressed_network_accuracy} zu erkennen ist. Dies sind die Resultate der Neuronalen Netze aus dem Kapitel \ref{sec:results_classification}. Es sind Ausreisser zu erkennen, deren Werte liegen aber mit einer Trefferquote von maximal 45\% weit entfernt von den Werten der unkomprimierten Netze.
+	Die Komprimierung des Netzwerkes gemäss Kapitel \ref{sec:method_compress} in eine Matrix führt zu einem starken Qualitätsverlust der Vorhersagen. Der grosse Teil der komprimierten Netze erreicht eine Trefferquote von 30\%, wie in Abbildung \ref{fig:hist_compressed_network_accuracy} zu erkennen ist. Dies sind die Resultate der Neuronalen Netze aus dem Kapitel \ref{sec:results_classification}. Es sind Ausreisser zu erkennen, deren Werte liegen aber mit einer Trefferquote von maximal 45\% weit entfernt von den Werten der unkomprimierten Netze.
 	\begin{Figure}
 		\centering
 		\includegraphics[width=\linewidth]{img/results/histogram_compressed_network_accuracy.png}
@@ -29,7 +29,7 @@
 		\label{fig:hist_compressed_network_v2_accuracy}
 	\end{Figure}
 
-	Die Invertierung mit mehreren Matrizen erreicht die selben Werte wie die unkomprimierten Versionen. Dies ist in der Abbildung \ref{fig:hist_inverted_network_accuracy} zu erkennen. Aus diesem Grund wurden diese Art der Komprimierung für das Generieren der Bilder im weiteren Verlauf der Arbeit verwendet.
+	Die Invertierung mit mehreren Matrizen erreicht die selben Werte wie die unkomprimierten Versionen. Dies ist in der Abbildung \ref{fig:hist_inverted_network_accuracy} zu erkennen. Aus diesem Grund wurde diese Art der Komprimierung für das Generieren der Bilder im weiteren Verlauf der Arbeit verwendet.
 	\begin{Figure}
 		\centering
 		\includegraphics[width=\linewidth]{img/results/histogram_inverted_network_accuracy.png}
@@ -46,7 +46,7 @@
 		\label{fig:dig_ideal_0_inverted}
 	\end{Figure}
 
-	Ähnliche Resultate sind auch bei den interpolierten Ziffern zu sehen. In der Abbildung \ref{fig:dig_interpolated_4_9_50_inverted} ist eine Interpolation zwischen einer idealen Vier und einer idealen Neun abgebildet. Der Winkel für die Interpolation wurde so gewählt, dass sich der Vektor genau zwischen den beiden Werten befindet. Wie bereits bei den idealen Ziffervektoren lassen sich in Bild keine Ähnlichkeiten mit den im Eingabevektor definieren Ziffern erkennen.
+	Ähnliche Resultate sind auch bei den interpolierten Ziffern zu sehen. In der Abbildung \ref{fig:dig_interpolated_4_9_50_inverted} ist eine Interpolation zwischen einer idealen Vier und einer idealen Neun abgebildet. Der Winkel für die Interpolation wurde so gewählt, dass sich der Vektor genau zwischen den beiden Werten befindet. Wie bereits bei den idealen Ziffervektoren lassen sich im Bild keine Ähnlichkeiten mit den im Eingabevektor definieren Ziffern erkennen.
 	\begin{Figure}
 		\centering
 		\includegraphics[width=\linewidth]{img/results/interpolated_4_9_50_inverted.png}
@@ -55,7 +55,7 @@
 	\end{Figure}
 	
 	\subsection{Invertierung mit quadratischen Matrizen}
-	Das Trainieren eines Neuronalen Netzes, welches nur quadratische Matrizen verwendet, erwies sich als äussert schwer. Die Trainingszeiten wuchsen stark an und die Resultate waren deutlich schlechter als die der Netze ohne quadratischen Matrizen. Der Abbildung \ref{fig:hist_squared_network_accuracy} kann entnommen werden, dass die meisten Netzwerke mit quadratischen Matrizen Trefferquoten von ungefähr 12\% bis 16\% erreichen. Auch festzuhalten gibt es, dass ein grosser Teil der trainierten Netze lediglich 10\% der Bilder korrekt klassifiziert, was einer zufälligen Klassifikation entspricht.
+	Das Trainieren eines Neuronalen Netzes, welches nur quadratische Matrizen verwendet, erwies sich als äussert schwierig. Die Trainingszeiten wuchsen stark an und die Resultate waren deutlich schlechter als die der Netze ohne quadratischen Matrizen. Der Abbildung \ref{fig:hist_squared_network_accuracy} kann entnommen werden, dass die meisten Netzwerke mit quadratischen Matrizen Trefferquoten von ungefähr 12\% bis 16\% erreichen. Es gilt auch festzuhalten, dass ein grosser Teil der trainierten Netze lediglich 10\% der Bilder korrekt klassifiziert, was einer zufälligen Klassifikation entspricht.
 	\begin{Figure}
 		\centering
 		\includegraphics[width=\linewidth]{img/results/histogram_squared_network_accuracy.png}
@@ -63,11 +63,11 @@
 		\label{fig:hist_squared_network_accuracy}
 	\end{Figure}
 
-	Wegen der Schwierigkeit Neuronale Netze mit quadratischen Matrizen zu trainieren musste bestimmt werden, ob dieser Ansatz für diesen Bericht weiterverfolgt wird. Daher wurde Untersucht, ob eine Invertierung eines Neuronalen Netzes mit ausschliesslich quadratischen Matrizen realisierbar ist.  Die Resultate dazu sind im Kapitel \ref{sec:results_error_inverse} zu finden.
+	Wegen der Schwierigkeit Neuronale Netze mit quadratischen Matrizen zu trainieren, musste bestimmt werden, ob dieser Ansatz für diesen Bericht weiterverfolgt wird. Daher wurde Untersucht, ob eine Invertierung eines Neuronalen Netzes mit ausschliesslich quadratischen Matrizen realisierbar ist.  Die Resultate dazu sind im Kapitel \ref{sec:results_error_inverse} zu finden.
 	
 	\subsection{Fehler bei Gleitkommazahloperationen}
 	\label{sec:results_error_inverse}
-	Um zu bestimmen, wie sich die Rundungsfehler der Gleitkommazahlen auf Invertierung des Neuronalen Netzwerks auswirken, wurden verschiedene zufällig generierte Matrizen vor- und rückwärts durch das Neuronalen Netz gerechnet und der durchschnittliche Fehler pro Wert in der Matrix bestimmt. Die Matrizen wurden so gewählt dass $ M \in \mathbb{R}^{n \times n}, n \in [3, 9] $ und im Neuronalen Netz aus einer bis vier Schichten besteht. Die Resultate sind der Tabelle \ref{tbl:reverse_error} zu entnehmen. Daraus lässt sich erkennen, dass bei einer Matrix aus $ \mathbb{R}^{9 \times 9} $ bereits ein Netzwerk mit einer Schicht die Werte der Matrix im Schnitt die Werte im Bereich von $ 10^{0} $ verändert. Bei vier Schichten wird dieser Wert bereits bei einer Matrix aus $ \mathbb{R}^{6 \times 6} $ überschritten.
+	Um zu bestimmen, wie sich die Rundungsfehler der Gleitkommazahlen auf Invertierung des Neuronalen Netzwerks auswirken, wurden verschiedene zufällig generierte Matrizen vor- und rückwärts durch das Neuronalen Netz gerechnet und der durchschnittliche Fehler pro Wert in der Matrix bestimmt. Die Matrizen wurden so gewählt, dass $ M \in \mathbb{R}^{n \times n}, n \in [3, 9] $ und im Neuronalen Netz aus einer bis vier Schichten besteht. Die Resultate sind der Tabelle \ref{tbl:reverse_error} zu entnehmen.Daraus lässt sich erkennen, dass bei einer Matrix aus $ \mathbb{R}^{9 \times 9} $ bereits ein Netzwerk mit einer Schicht die Werte nach der Invertierung im Schnitt im Bereich von $ 10^{0} $ verändert. Bei vier Schichten wird dieser Wert bereits bei einer Matrix aus $ \mathbb{R}^{6 \times 6} $ überschritten.
 	\begin{table}[H]
 		\centering
 		\begin{tabular}{|l|r|r|r|r|}

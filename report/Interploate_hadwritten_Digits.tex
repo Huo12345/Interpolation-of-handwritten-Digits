@@ -13,6 +13,19 @@
 \usepackage{subfiles}
 \usepackage[nodayofweek,level]{datetime}
 \usepackage[margin=1in,headheight=13.6pt]{geometry}
+\usepackage{pgffor}
+\usepackage{listings}
+\lstset{literate=%
+	{Ö}{{\"O}}1
+	{Ä}{{\"A}}1
+	{Ü}{{\"U}}1
+	{ß}{{\ss}}1
+	{ü}{{\"u}}1
+	{ä}{{\"a}}1
+	{ö}{{\"o}}1
+	{~}{{\textasciitilde}}1
+}
+
 \usepackage{fancyhdr}
 
 \pagestyle{fancy}
@@ -71,10 +84,10 @@
 	\newpage
 	\appendix
 	\section{Anhang: Resultate}
-	\label{sec:apendix_konfusion_network}
-	\label{sec:apendix_numbers_inversion}
+	\subfile{appendix_results}
 	
 	\newpage
 	\section{Anhang: Code}
+	\subfile{appendix_code}
 
 \end{document}

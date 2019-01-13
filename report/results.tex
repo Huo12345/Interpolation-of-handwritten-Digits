@@ -112,5 +112,30 @@
 	\end{Figure}
 	
 	In einem letzten Versuch wurden für die Approximation anstelle von zufällig generierten Matrizen als Startpunkt Bilder aus dem Trainingssatz verwendet. Dies führte dazu, dass die Approximation die Inputmatrix nicht veränderte, auch wenn eine andere Ziffer als Ziel der Approximation angegeben wurde.
+	
+	\subsection{Manuelle Untersuchung der Klassifizierung}
+	Da die vorgängig verwendeten Methoden zur Untersuchung des Neuronalen Netzes grösstenteils zufälliges Rauschen produzierten, welche kaum eine sinnvolle Interpretation zulassen, wurde für eine letzte Analyse ein nicht-generativer Ansatz verwendet. Anstatt zu versuchen neue Bilder zu generieren, wurden Bilder aus dem Test-Datensatz gesucht, welche für eine Analyse interessant sein könnten. Gesucht wurde nach minimalen Fehlerwerten, maximale Fehlerwerten mit korrekter Klassifizierung und minimale Fehlerwerten mit falscher Klassifizierung. So sollte ein Set von gut erkennbaren Ziffern und ein Set mit für das Netzwerk grenzwertigen Ziffern für die Analyse gewonnen werden. Die Hoffnung war hierbei manuell Merkmale zu erkennen, welche dem Neuronalen Netz bei der Klassifizierung helfen oder stören. Dabei wurde erwartet, dass schön geschriebene Ziffern generell tiefe Fehlerwerte bei der Klassifizierung erhalten und Ziffern mit verschiedenen Schreibvarianten schlechter abschneiden. Alle Resultate sind im Kapitel \ref{sec:appendix_manual_analysis} zu finden.
+	\begin{Figure}
+		\centering
+		\includegraphics[width=\linewidth]{img/classification_analysis/flop_1_1}
+		\captionof{figure}{Eine 1 mit dicker Line erkannt als 8}
+		\label{fig:dig_flop_thick_line}
+	\end{Figure}
+
+	Effektiv lassen sich gewisse Muster erkennen. Das Netz scheint Mühe mit dicken Linien zu haben. Ein Beispiel dafür ist in der Abbildung \ref{fig:dig_flop_thick_line} zu sehen, in welcher eine Eins als Acht klassifiziert wird. Aber auch dünner als durchschnittliche Linien führen zu falschen Klassifizierungen. Eine weitere Schwierigkeit für das Neuronale Netz sind offenbar nicht durchgezogene Linien. Die Ziffer in der Abbildung \ref{fig:dig_flop_broken_line} ist effektiv nicht leicht zu klassifizieren, aber eine Vier ist das bestimmt nicht. 
+	\begin{Figure}
+		\centering
+		\includegraphics[width=\linewidth]{img/classification_analysis/flop_6_1}
+		\captionof{figure}{Eine 6 mit unterbrochener Line erkannt als 4}
+		\label{fig:dig_flop_broken_line}
+	\end{Figure}
+
+	Bei den Klassifizierungen mit tiefen Fehlerwerten lassen sich ebenfalls Muster erkennen. Zum ersten könnten fast alle Ziffern aus einem Lehrbuch zum Schreiben lernen aus der ersten Klasse entnommen worden sein. Weiter ist ebenfalls zu erkennen, dass auch unterschiedliche Schreibweisen für Ziffern kaum Einfluss auf die Klassifizierung hat: Sowohl eine Sieben mit also auch eine ohne Querstrich erkennt das Netzwerk mit guter Zuverlässigkeit, wie in Abbildung \ref{fig:dig_top_variante} zu erkennen ist.
+	\begin{Figure}
+		\centering
+		\includegraphics[width=\linewidth]{img/classification_analysis/clear_7_1}
+		\captionof{figure}{Eine 7 mit Variante Querstrich}
+		\label{fig:dig_top_variante}
+	\end{Figure}
 
 \end{document}
